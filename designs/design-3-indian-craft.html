@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Embroo India — अपनी कहानी पहनो | Wear Your Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Yatra+One&family=Mukta:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --saffron:#E8732A;--saffron-l:#F09050;--saffron-d:#C55E1C;--saffron-muted:rgba(232,115,42,.12);
+  --green:#1A5632;--green-l:#237A48;--green-d:#0F3A22;--green-muted:rgba(26,86,50,.1);
+  --cream:#FDF5E6;--cream-d:#F5E6CC;--cream-dd:#ECD8B3;
+  --maroon:#7B2D3B;--maroon-l:#9C3A4C;--maroon-muted:rgba(123,45,59,.1);
+  --bg:#FDF5E6;--bg2:#F9EDD5;--bg3:#F3E2C0;
+  --txt:#2C1810;--txt2:#5C4033;--txt3:#8C7060;
+  --border:rgba(123,45,59,.15);--border-s:rgba(232,115,42,.3);
+  --ff-d:'Yatra One',cursive;--ff-b:'Mukta',sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);--ease-s:cubic-bezier(.34,1.56,.64,1);
+  --r:8px;--r2:16px;--r3:24px;
+  --shadow:0 4px 20px rgba(44,24,16,.08);--shadow-h:0 12px 40px rgba(44,24,16,.15);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff-b);background:var(--bg);color:var(--txt);line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:var(--saffron);text-decoration:none;transition:color .3s}a:hover{color:var(--saffron-d)}
+button{cursor:pointer;font-family:var(--ff-b);border:none;outline:none}
+.container{max-width:1220px;margin:0 auto;padding:0 24px}
+
+/* Mandala watermark */
+body::before{content:'';position:fixed;top:50%;left:50%;width:900px;height:900px;transform:translate(-50%,-50%);opacity:.03;pointer-events:none;z-index:0;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Ccircle cx='200' cy='200' r='190' fill='none' stroke='%237B2D3B' stroke-width='.5'/%3E%3Ccircle cx='200' cy='200' r='150' fill='none' stroke='%237B2D3B' stroke-width='.5'/%3E%3Ccircle cx='200' cy='200' r='110' fill='none' stroke='%237B2D3B' stroke-width='.5'/%3E%3Ccircle cx='200' cy='200' r='70' fill='none' stroke='%237B2D3B' stroke-width='.5'/%3E%3Cg stroke='%237B2D3B' stroke-width='.4' fill='none'%3E%3Cpath d='M200 10L200 390M10 200L390 200'/%3E%3Cpath d='M200 10Q300 100 390 200Q300 300 200 390Q100 300 10 200Q100 100 200 10Z'/%3E%3Cpath d='M65 65L335 335M335 65L65 335'/%3E%3Cpath d='M200 10Q350 50 390 200Q350 350 200 390Q50 350 10 200Q50 50 200 10Z' transform='rotate(45 200 200)'/%3E%3Cpath d='M200 50C280 80 320 120 350 200C320 280 280 320 200 350C120 320 80 280 50 200C80 120 120 80 200 50Z'/%3E%3C/g%3E%3C/svg%3E");
+background-repeat:no-repeat;background-size:contain}
+
+/* Rangoli divider */
+.rangoli-divider{text-align:center;padding:30px 0;position:relative;overflow:hidden}
+.rangoli-divider svg{width:320px;height:40px;opacity:.4}
+.rangoli-divider::before,.rangoli-divider::after{content:'';position:absolute;top:50%;width:200px;height:1px;background:linear-gradient(90deg,transparent,var(--saffron-muted),var(--maroon-muted),transparent)}
+.rangoli-divider::before{right:55%}.rangoli-divider::after{left:55%}
+
+/* Reveal animation */
+.rv{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease),transform .8s var(--ease)}.rv.vis{opacity:1;transform:none}
+.rv-d1{transition-delay:.1s}.rv-d2{transition-delay:.2s}.rv-d3{transition-delay:.3s}.rv-d4{transition-delay:.4s}.rv-d5{transition-delay:.5s}
+
+/* ═══ HEADER ═══ */
+.hdr{position:fixed;top:0;left:0;right:0;z-index:1000;padding:14px 0;transition:all .4s}
+.hdr.scrolled{background:rgba(253,245,230,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 2px 20px rgba(44,24,16,.08)}
+.hdr .container{display:flex;align-items:center;justify-content:space-between}
+.hdr-nav{display:flex;align-items:center;gap:28px}
+.nav-link{color:var(--txt2);font-size:.82rem;font-weight:600;letter-spacing:.05em;transition:color .3s}.nav-link:hover{color:var(--saffron)}
+.logo{font-family:var(--ff-d);font-size:1.6rem;color:var(--saffron);position:relative}
+.logo span{color:var(--green)}
+.cart-btn{position:relative;background:none;color:var(--txt2);font-size:1.1rem;padding:6px;transition:color .3s}.cart-btn:hover{color:var(--saffron)}
+.cart-badge{position:absolute;top:-4px;right:-6px;background:var(--saffron);color:#fff;font-size:.55rem;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+
+/* ═══ HERO ═══ */
+.hero{min-height:100vh;display:flex;align-items:center;padding-top:80px;position:relative;overflow:hidden;
+background:linear-gradient(165deg,var(--cream) 0%,var(--cream-d) 40%,rgba(232,115,42,.05) 100%)}
+.hero-inner{display:flex;align-items:center;gap:48px;width:100%}
+.hero-txt{flex:0 0 55%;z-index:2}
+.hero-visual{flex:1;display:flex;align-items:center;justify-content:center;position:relative}
+
+.hero-hindi{font-family:var(--ff-d);font-size:clamp(2.6rem,5vw,4.2rem);color:var(--maroon);line-height:1.2;margin-bottom:8px;opacity:0;animation:fadeUp .8s var(--ease) .3s forwards}
+.hero-subtitle{font-family:var(--ff-d);font-size:clamp(1.3rem,2.5vw,1.8rem);color:var(--saffron);margin-bottom:20px;opacity:0;animation:fadeUp .8s var(--ease) .6s forwards}
+.hero-desc{color:var(--txt2);font-size:1.05rem;max-width:460px;line-height:1.8;margin-bottom:36px;opacity:0;animation:fadeUp .8s var(--ease) .9s forwards}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s var(--ease) 1.2s forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+.btn-p{background:var(--saffron);color:#fff;padding:14px 36px;font-size:.88rem;font-weight:700;letter-spacing:.04em;border-radius:var(--r);transition:all .4s var(--ease);position:relative;overflow:hidden}
+.btn-p::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-100%);transition:transform .6s}.btn-p:hover::before{transform:translateX(100%)}
+.btn-p:hover{background:var(--saffron-d);transform:translateY(-2px);box-shadow:0 8px 28px rgba(232,115,42,.3)}
+.btn-o{background:none;color:var(--green);padding:14px 36px;font-size:.88rem;font-weight:700;letter-spacing:.04em;border:2px solid var(--green);border-radius:var(--r);transition:all .4s var(--ease)}
+.btn-o:hover{background:var(--green);color:#fff;transform:translateY(-2px)}
+
+.hero-hoodie{animation:hFloat 6s ease-in-out infinite}
+@keyframes hFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-14px) rotate(1deg)}}
+.hero-hoodie svg{width:300px;filter:drop-shadow(0 20px 40px rgba(44,24,16,.12))}
+.hero-mandala{position:absolute;width:400px;height:400px;border-radius:50%;border:1px dashed var(--saffron-muted);top:50%;left:50%;transform:translate(-50%,-50%);animation:mandalaSpin 60s linear infinite;pointer-events:none}
+.hero-mandala::before{content:'';position:absolute;inset:30px;border-radius:50%;border:1px dashed var(--maroon-muted);animation:mandalaSpin 45s linear infinite reverse}
+@keyframes mandalaSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+/* ═══ SECTIONS ═══ */
+.sec{padding:100px 0;position:relative}
+.sec-label{font-size:.7rem;letter-spacing:.35em;text-transform:uppercase;color:var(--saffron);font-weight:700;margin-bottom:10px}
+.sec-title{font-family:var(--ff-d);font-size:clamp(1.8rem,3vw,2.6rem);color:var(--maroon);line-height:1.2;margin-bottom:10px}
+.sec-sub{color:var(--txt2);font-size:.95rem;max-width:480px}
+.sec-hdr{margin-bottom:50px}.sec-hdr.ctr{text-align:center}.sec-hdr.ctr .sec-sub{margin:0 auto}
+
+/* Saffron line */
+.saffron-line{width:60px;height:3px;background:linear-gradient(90deg,var(--saffron),var(--green));border-radius:2px;margin:14px 0}
+.sec-hdr.ctr .saffron-line{margin:14px auto}
+
+/* ═══ HOW IT WORKS ═══ */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.step-card{background:#fff;border-radius:var(--r2);padding:32px 24px;text-align:center;box-shadow:var(--shadow);border:1px solid var(--cream-dd);transition:all .5s var(--ease);position:relative;overflow:hidden}
+.step-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--saffron),var(--green));transform:scaleX(0);transition:transform .5s var(--ease)}.step-card:hover::before{transform:scaleX(1)}
+.step-card:hover{transform:translateY(-6px) rotate(-1deg);box-shadow:var(--shadow-h)}
+.step-num{width:50px;height:50px;border-radius:50%;background:var(--saffron-muted);color:var(--saffron);font-family:var(--ff-d);font-size:1.3rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.step-icon{font-size:2rem;margin-bottom:14px}
+.step-name{font-family:var(--ff-d);font-size:1.2rem;color:var(--maroon);margin-bottom:8px}
+.step-desc{color:var(--txt2);font-size:.85rem;line-height:1.7}
+
+/* ═══ PRODUCTS ═══ */
+.products-sec{background:var(--bg2)}
+.prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.prod-card{background:#fff;border-radius:var(--r2);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--cream-dd);transition:all .5s var(--ease)}
+.prod-card:hover{transform:translateY(-8px) rotate(1deg);box-shadow:var(--shadow-h)}
+.prod-img{height:200px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--cream-d),var(--cream));position:relative}
+.prod-img svg{width:100px;transition:transform .5s var(--ease)}.prod-card:hover .prod-img svg{transform:scale(1.1) rotate(-3deg)}
+.prod-tag{position:absolute;top:12px;right:12px;background:var(--saffron);color:#fff;font-size:.65rem;font-weight:700;padding:4px 10px;border-radius:20px;letter-spacing:.05em}
+.prod-info{padding:18px}
+.prod-name{font-family:var(--ff-d);font-size:1.15rem;color:var(--maroon);margin-bottom:4px}
+.prod-price{font-weight:700;color:var(--saffron);font-size:.95rem;margin-bottom:2px}
+.prod-price-orig{text-decoration:line-through;color:var(--txt3);font-size:.8rem;font-weight:400;margin-left:6px}
+.prod-btn{display:block;width:100%;padding:11px;background:var(--green);color:#fff;text-align:center;font-size:.82rem;font-weight:700;letter-spacing:.06em;border-radius:var(--r);margin-top:12px;transition:all .3s}
+.prod-btn:hover{background:var(--green-l)}
+
+/* ═══ DESIGN YOUR OWN ═══ */
+.diy-sec{background:var(--bg)}
+.diy-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.diy-preview-wrap{background:#fff;border-radius:var(--r3);box-shadow:var(--shadow);border:1px solid var(--cream-dd);padding:20px;position:sticky;top:100px}
+.diy-preview{display:flex;align-items:center;justify-content:center;min-height:360px;background:var(--cream);border-radius:var(--r2)}
+.diy-preview svg{width:240px;transition:all .5s var(--ease)}
+.diy-view-toggle{display:flex;gap:8px;justify-content:center;margin-top:14px}
+.diy-view-btn{padding:8px 20px;background:none;border:2px solid var(--cream-dd);border-radius:var(--r);font-size:.78rem;font-weight:600;color:var(--txt2);transition:all .3s}
+.diy-view-btn.active{background:var(--saffron);color:#fff;border-color:var(--saffron)}
+
+.diy-controls{background:#fff;border-radius:var(--r3);box-shadow:var(--shadow);border:1px solid var(--cream-dd);overflow:hidden}
+.diy-tabs{display:flex;border-bottom:2px solid var(--cream-d)}
+.diy-tab{flex:1;padding:14px;text-align:center;font-weight:700;font-size:.82rem;letter-spacing:.04em;color:var(--txt3);cursor:pointer;transition:all .3s;border-bottom:3px solid transparent;margin-bottom:-2px}
+.diy-tab.active{color:var(--saffron);border-bottom-color:var(--saffron);background:var(--saffron-muted)}
+.diy-tab-content{padding:24px;display:none}.diy-tab-content.active{display:block}
+
+/* Color pickers */
+.clr-group{margin-bottom:20px}
+.clr-label{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txt2);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.clr-label .indicator{width:14px;height:14px;border-radius:50%;border:2px solid var(--cream-dd)}
+.clr-swatches{display:flex;gap:8px;flex-wrap:wrap}
+.clr-sw{width:32px;height:32px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all .3s var(--ease-s);position:relative}
+.clr-sw:hover{transform:scale(1.18)}.clr-sw.on{border-color:var(--saffron);box-shadow:0 0 0 3px var(--saffron-muted)}
+.clr-sw.on::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.55rem;font-weight:800;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+
+/* Design tab zones */
+.zone-select{margin-bottom:16px}
+.zone-select label{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txt2);display:block;margin-bottom:6px}
+.zone-select select{width:100%;padding:10px 12px;border:2px solid var(--cream-dd);border-radius:var(--r);font-family:var(--ff-b);font-size:.88rem;background:#fff;color:var(--txt);cursor:pointer;transition:border-color .3s}
+.zone-select select:focus{border-color:var(--saffron);outline:none}
+
+.design-types{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.design-type{padding:10px 6px;text-align:center;font-size:.7rem;font-weight:600;border:2px solid var(--cream-dd);border-radius:var(--r);cursor:pointer;transition:all .3s;color:var(--txt2)}
+.design-type:hover{border-color:var(--saffron-muted)}.design-type.active{background:var(--saffron);color:#fff;border-color:var(--saffron)}
+
+/* Letters editor */
+.letters-editor{display:none;margin-top:16px;padding:16px;background:var(--cream);border-radius:var(--r2)}
+.letters-editor.active{display:block}
+.letters-editor label{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txt2);display:block;margin-bottom:6px}
+.letters-editor input[type="text"]{width:100%;padding:10px 12px;border:2px solid var(--cream-dd);border-radius:var(--r);font-family:var(--ff-b);font-size:.92rem;margin-bottom:12px;background:#fff;transition:border-color .3s}
+.letters-editor input[type="text"]:focus{border-color:var(--saffron);outline:none}
+.font-options{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.font-opt{padding:6px 14px;border:2px solid var(--cream-dd);border-radius:var(--r);cursor:pointer;font-size:.78rem;transition:all .3s;background:#fff}
+.font-opt:hover{border-color:var(--saffron-muted)}.font-opt.active{background:var(--saffron);color:#fff;border-color:var(--saffron)}
+.stitch-options{display:flex;gap:8px;margin-bottom:12px}
+.stitch-opt{padding:6px 14px;border:2px solid var(--cream-dd);border-radius:var(--r);cursor:pointer;font-size:.72rem;font-weight:600;transition:all .3s;background:#fff}
+.stitch-opt:hover{border-color:var(--saffron-muted)}.stitch-opt.active{background:var(--green);color:#fff;border-color:var(--green)}
+
+/* Price calculator */
+.price-calc{background:linear-gradient(135deg,var(--saffron-muted),var(--green-muted));border-radius:var(--r2);padding:20px;margin-top:20px}
+.price-row{display:flex;justify-content:space-between;padding:6px 0;font-size:.88rem;color:var(--txt2)}
+.price-row.total{border-top:2px solid var(--border);padding-top:12px;margin-top:8px;font-size:1.1rem;font-weight:700;color:var(--maroon)}
+.price-row .discount{color:var(--green);font-weight:600}
+.price-add-cart{width:100%;padding:14px;background:var(--saffron);color:#fff;font-size:.92rem;font-weight:700;border-radius:var(--r);margin-top:14px;transition:all .3s}
+.price-add-cart:hover{background:var(--saffron-d);transform:translateY(-2px);box-shadow:0 6px 20px rgba(232,115,42,.3)}
+
+/* Garment type select in builder */
+.garment-select{display:flex;gap:8px;margin-bottom:16px}
+.garment-opt{flex:1;padding:10px;text-align:center;font-size:.78rem;font-weight:700;border:2px solid var(--cream-dd);border-radius:var(--r);cursor:pointer;transition:all .3s;color:var(--txt2)}
+.garment-opt:hover{border-color:var(--saffron-muted)}.garment-opt.active{background:var(--maroon);color:#fff;border-color:var(--maroon)}
+
+/* ═══ FEATURES ═══ */
+.feat-sec{background:var(--bg2)}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.feat-card{background:#fff;border-radius:var(--r2);padding:28px;box-shadow:var(--shadow);border:1px solid var(--cream-dd);transition:all .5s var(--ease)}
+.feat-card:hover{transform:translateY(-6px) rotate(-1deg);box-shadow:var(--shadow-h)}
+.feat-icon{font-size:2rem;margin-bottom:14px;width:56px;height:56px;background:var(--saffron-muted);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.feat-name{font-family:var(--ff-d);font-size:1.1rem;color:var(--maroon);margin-bottom:6px}
+.feat-desc{color:var(--txt2);font-size:.84rem;line-height:1.7}
+
+/* ═══ TESTIMONIALS ═══ */
+.testi-sec{background:var(--bg)}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.testi-card{background:#fff;border-radius:var(--r2);padding:28px;box-shadow:var(--shadow);border:1px solid var(--cream-dd);transition:all .5s var(--ease);position:relative}
+.testi-card::before{content:'\201C';position:absolute;top:14px;left:20px;font-family:var(--ff-d);font-size:3.5rem;color:var(--saffron-muted);line-height:1}
+.testi-card:hover{transform:translateY(-4px) rotate(1deg);box-shadow:var(--shadow-h)}
+.testi-stars{color:var(--saffron);font-size:.9rem;margin-bottom:12px}
+.testi-txt{font-size:.92rem;line-height:1.7;color:var(--txt2);margin-bottom:16px;padding-top:10px}
+.testi-author{font-weight:700;font-size:.88rem;color:var(--maroon)}.testi-loc{color:var(--txt3);font-size:.75rem}
+
+/* ═══ NEWSLETTER ═══ */
+.nl-sec{background:linear-gradient(135deg,var(--green-d),var(--green));color:#fff;text-align:center;padding:80px 0}
+.nl-sec .sec-title{color:#fff}.nl-sec .sec-sub{color:rgba(255,255,255,.8)}
+.nl-form{display:flex;gap:10px;max-width:460px;margin:24px auto 0;flex-wrap:wrap;justify-content:center}
+.nl-form input{flex:1;min-width:220px;padding:14px 18px;border:2px solid rgba(255,255,255,.3);border-radius:var(--r);background:rgba(255,255,255,.1);color:#fff;font-family:var(--ff-b);font-size:.9rem}
+.nl-form input::placeholder{color:rgba(255,255,255,.5)}
+.nl-form input:focus{border-color:var(--saffron);outline:none}
+.nl-form button{padding:14px 32px;background:var(--saffron);color:#fff;font-weight:700;border-radius:var(--r);font-size:.88rem;transition:all .3s}
+.nl-form button:hover{background:var(--saffron-d)}
+
+/* ═══ FOOTER ═══ */
+.footer{background:var(--cream-d);border-top:3px solid var(--saffron);padding:60px 0 30px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:30px;margin-bottom:40px}
+.footer-brand .logo{font-size:1.4rem;margin-bottom:10px;display:inline-block}
+.footer-brand p{color:var(--txt2);font-size:.85rem;line-height:1.7;margin-bottom:14px}
+.made-in-india{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(90deg,var(--saffron-muted),var(--green-muted));padding:8px 18px;border-radius:var(--r);font-weight:700;font-size:.85rem;color:var(--maroon)}
+.footer h4{font-family:var(--ff-d);font-size:1rem;color:var(--maroon);margin-bottom:14px}
+.footer ul{list-style:none}.footer li{margin-bottom:8px}
+.footer li a{color:var(--txt2);font-size:.84rem;transition:color .3s}.footer li a:hover{color:var(--saffron)}
+.footer-payments{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pay-badge{background:#fff;padding:6px 12px;border-radius:var(--r);font-size:.7rem;font-weight:600;color:var(--txt2);box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.footer-bottom{border-top:1px solid var(--cream-dd);padding-top:24px;text-align:center;color:var(--txt3);font-size:.8rem}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:968px){.hero-inner{flex-direction:column;text-align:center}.hero-txt{flex:none}.hero-desc{margin:0 auto 36px}.hero-ctas{justify-content:center}
+.diy-grid{grid-template-columns:1fr}.diy-preview-wrap{position:static}.footer-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.prod-grid{grid-template-columns:repeat(2,1fr)}.feat-grid{grid-template-columns:1fr}.testi-grid{grid-template-columns:1fr}.steps{grid-template-columns:1fr}}
+@media(max-width:480px){.prod-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="hdr" id="hdr">
+<div class="container">
+  <nav class="hdr-nav"><a href="#" class="nav-link">Products</a><a href="#" class="nav-link">Design Studio</a></nav>
+  <a href="#" class="logo">Emb<span>roo</span></a>
+  <div class="hdr-nav"><a href="#" class="nav-link">About</a><button class="cart-btn">🛒<span class="cart-badge">0</span></button></div>
+</div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+<div class="container">
+  <div class="hero-inner">
+    <div class="hero-txt">
+      <h1 class="hero-hindi">अपनी कहानी पहनो</h1>
+      <p class="hero-subtitle">Wear Your Story — Stitch by Stitch</p>
+      <p class="hero-desc">India's finest custom embroidery studio. From college logos to corporate branding, we handcraft every thread with love. Premium quality, proudly made in India.</p>
+      <div class="hero-ctas">
+        <a href="#builder" class="btn-p">Start Designing</a>
+        <a href="#products" class="btn-o">Explore Collection</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-mandala"></div>
+      <div class="hero-hoodie">
+        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+          <path d="M60 55 C60 30,140 30,140 55 L155 80 L145 85 L140 70 L140 200 L60 200 L60 70 L55 85 L45 80 Z" fill="#E8732A" stroke="#C55E1C" stroke-width="1"/>
+          <path d="M80 55 C80 40,120 40,120 55 L120 70 C120 75,80 75,80 70 Z" fill="#FDF5E6" stroke="#C55E1C" stroke-width=".5"/>
+          <ellipse cx="100" cy="130" rx="22" ry="18" fill="rgba(123,45,59,.15)" stroke="rgba(123,45,59,.3)" stroke-width=".5"/>
+          <text x="100" y="134" text-anchor="middle" font-size="8" fill="#7B2D3B" font-family="serif" font-weight="bold">EMBROO</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Rangoli Divider -->
+<div class="rangoli-divider">
+<svg viewBox="0 0 320 40" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke-width="1.2">
+    <path d="M0 20 L120 20" stroke="#E8732A" opacity=".3"/>
+    <circle cx="140" cy="20" r="8" stroke="#7B2D3B" opacity=".4"/><circle cx="140" cy="20" r="4" stroke="#E8732A" opacity=".4"/>
+    <circle cx="160" cy="20" r="12" stroke="#1A5632" opacity=".3"/><circle cx="160" cy="20" r="6" stroke="#E8732A" opacity=".3"/>
+    <circle cx="180" cy="20" r="8" stroke="#7B2D3B" opacity=".4"/><circle cx="180" cy="20" r="4" stroke="#E8732A" opacity=".4"/>
+    <path d="M200 20 L320 20" stroke="#1A5632" opacity=".3"/>
+    <circle cx="160" cy="20" r="16" stroke="#7B2D3B" opacity=".2"/>
+    <path d="M144 20 L160 4 L176 20 L160 36 Z" stroke="#E8732A" opacity=".25"/>
+  </g>
+</svg>
+</div>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="sec" id="how-it-works">
+<div class="container">
+  <div class="sec-hdr ctr rv">
+    <p class="sec-label">How It Works</p>
+    <h2 class="sec-title">Three Simple Steps to Your Custom Design</h2>
+    <div class="saffron-line"></div>
+    <p class="sec-sub">From imagination to embroidery in just 3 easy steps. No minimum order required.</p>
+  </div>
+  <div class="steps">
+    <div class="step-card rv rv-d1">
+      <div class="step-num">1</div>
+      <div class="step-icon">🎨</div>
+      <h3 class="step-name">Choose & Design</h3>
+      <p class="step-desc">Pick your garment and use our studio to place your text, logo, or artwork exactly where you want it.</p>
+    </div>
+    <div class="step-card rv rv-d2">
+      <div class="step-num">2</div>
+      <div class="step-icon">🧵</div>
+      <h3 class="step-name">We Stitch It</h3>
+      <p class="step-desc">Our artisans embroider your design with premium threads on high-quality fabrics. Each piece is handcrafted.</p>
+    </div>
+    <div class="step-card rv rv-d3">
+      <div class="step-num">3</div>
+      <div class="step-icon">📦</div>
+      <h3 class="step-name">Delivered to You</h3>
+      <p class="step-desc">Free shipping across India. Your custom embroidered garment arrives at your doorstep in 5-7 business days.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Rangoli Divider -->
+<div class="rangoli-divider">
+<svg viewBox="0 0 320 40" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke-width="1"><path d="M20 20 C50 5,90 35,120 20 C150 5,190 35,220 20 C250 5,290 35,300 20" stroke="#E8732A" opacity=".25"/><path d="M20 20 C50 35,90 5,120 20 C150 35,190 5,220 20 C250 35,290 5,300 20" stroke="#1A5632" opacity=".25"/></g>
+</svg>
+</div>
+
+<!-- ═══ PRODUCTS ═══ -->
+<section class="sec products-sec" id="products">
+<div class="container">
+  <div class="sec-hdr ctr rv">
+    <p class="sec-label">Our Collection</p>
+    <h2 class="sec-title">Premium Garments, Custom Embroidered</h2>
+    <div class="saffron-line"></div>
+    <p class="sec-sub">All prices include your first embroidery design. Bulk orders get extra discounts!</p>
+  </div>
+  <div class="prod-grid">
+    <!-- Hoodie -->
+    <div class="prod-card rv rv-d1">
+      <div class="prod-img">
+        <span class="prod-tag">BESTSELLER</span>
+        <svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg"><path d="M30 28C30 15,70 15,70 28L77 40 L73 42 L70 35 L70 100 L30 100 L30 35 L27 42 L23 40Z" fill="#7B2D3B" stroke="#5A1F2B" stroke-width=".5"/><path d="M40 28C40 22,60 22,60 28L60 35C60 38,40 38,40 35Z" fill="#FDF5E6"/></svg>
+      </div>
+      <div class="prod-info">
+        <h3 class="prod-name">Custom Hoodie</h3>
+        <p class="prod-price">₹1,499 <span class="prod-price-orig">₹1,899</span></p>
+        <button class="prod-btn" onclick="scrollToBuilder('hoodie')">CUSTOMIZE NOW</button>
+      </div>
+    </div>
+    <!-- T-Shirt -->
+    <div class="prod-card rv rv-d2">
+      <div class="prod-img">
+        <svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg"><path d="M25 20L35 15L40 25C40 30,60 30,60 25L65 15L75 20L80 35L72 38L72 100L28 100L28 38L20 35Z" fill="#E8732A" stroke="#C55E1C" stroke-width=".5"/><path d="M42 25C42 22,58 22,58 25L58 30C58 33,42 33,42 30Z" fill="#FDF5E6"/></svg>
+      </div>
+      <div class="prod-info">
+        <h3 class="prod-name">Custom T-Shirt</h3>
+        <p class="prod-price">₹799 <span class="prod-price-orig">₹999</span></p>
+        <button class="prod-btn" onclick="scrollToBuilder('tshirt')">CUSTOMIZE NOW</button>
+      </div>
+    </div>
+    <!-- Polo -->
+    <div class="prod-card rv rv-d3">
+      <div class="prod-img">
+        <svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg"><path d="M25 20L35 15L40 25C40 30,60 30,60 25L65 15L75 20L80 35L72 38L72 100L28 100L28 38L20 35Z" fill="#1A5632" stroke="#0F3A22" stroke-width=".5"/><path d="M45 25L50 40L55 25" fill="none" stroke="#FDF5E6" stroke-width="1.5"/><rect x="47" y="25" width="6" height="3" rx="1" fill="#FDF5E6"/></svg>
+      </div>
+      <div class="prod-info">
+        <h3 class="prod-name">Custom Polo</h3>
+        <p class="prod-price">₹999 <span class="prod-price-orig">₹1,249</span></p>
+        <button class="prod-btn" onclick="scrollToBuilder('polo')">CUSTOMIZE NOW</button>
+      </div>
+    </div>
+    <!-- Cap -->
+    <div class="prod-card rv rv-d4">
+      <div class="prod-img">
+        <svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="55" rx="35" ry="12" fill="#E8732A" stroke="#C55E1C" stroke-width=".5"/><path d="M20 55 C20 30,80 30,80 55" fill="#7B2D3B" stroke="#5A1F2B" stroke-width=".5"/><path d="M80 55 L95 58 L95 62 L80 60" fill="#E8732A" stroke="#C55E1C" stroke-width=".5"/></svg>
+      </div>
+      <div class="prod-info">
+        <h3 class="prod-name">Custom Cap</h3>
+        <p class="prod-price">₹499 <span class="prod-price-orig">₹649</span></p>
+        <button class="prod-btn" onclick="scrollToBuilder('hoodie')">CUSTOMIZE NOW</button>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Rangoli Divider -->
+<div class="rangoli-divider">
+<svg viewBox="0 0 320 40" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke-width="1.2"><circle cx="160" cy="20" r="14" stroke="#7B2D3B" opacity=".3"/><circle cx="160" cy="20" r="8" stroke="#E8732A" opacity=".35"/><circle cx="160" cy="20" r="3" fill="#E8732A" opacity=".3"/><path d="M130 20L146 20M174 20L190 20" stroke="#1A5632" opacity=".3"/><circle cx="125" cy="20" r="3" stroke="#E8732A" opacity=".3"/><circle cx="195" cy="20" r="3" stroke="#E8732A" opacity=".3"/></g>
+</svg>
+</div>
+
+<!-- ═══ DESIGN YOUR OWN (BUILDER) ═══ -->
+<section class="sec diy-sec" id="builder">
+<div class="container">
+  <div class="sec-hdr ctr rv">
+    <p class="sec-label">Design Studio</p>
+    <h2 class="sec-title">Create Your Masterpiece</h2>
+    <div class="saffron-line"></div>
+    <p class="sec-sub">Use our interactive builder to design your custom embroidered garment. See changes in real-time!</p>
+  </div>
+  <div class="diy-grid">
+    <!-- Preview -->
+    <div class="diy-preview-wrap rv">
+      <div class="diy-preview" id="garmentPreview">
+        <!-- SVG garment injected by JS -->
+      </div>
+      <div class="diy-view-toggle">
+        <button class="diy-view-btn active" data-view="front">Front View</button>
+        <button class="diy-view-btn" data-view="back">Back View</button>
+      </div>
+    </div>
+    <!-- Controls -->
+    <div class="diy-controls rv rv-d2">
+      <!-- Garment selector -->
+      <div style="padding:16px 24px;border-bottom:2px solid var(--cream-d)">
+        <div class="garment-select">
+          <button class="garment-opt active" data-garment="hoodie">🧥 Hoodie</button>
+          <button class="garment-opt" data-garment="tshirt">👕 T-Shirt</button>
+          <button class="garment-opt" data-garment="polo">👔 Polo</button>
+        </div>
+      </div>
+      <!-- Tabs -->
+      <div class="diy-tabs">
+        <button class="diy-tab active" data-tab="materials">🎨 Materials</button>
+        <button class="diy-tab" data-tab="design">✏️ Design</button>
+      </div>
+      <!-- Materials Tab -->
+      <div class="diy-tab-content active" id="tab-materials">
+        <div class="clr-group">
+          <p class="clr-label"><span class="indicator" id="bodyIndicator" style="background:#E8732A"></span> Body Color</p>
+          <div class="clr-swatches" id="bodyColors"></div>
+        </div>
+        <div class="clr-group" id="hoodGroup">
+          <p class="clr-label"><span class="indicator" id="hoodIndicator" style="background:#7B2D3B"></span> Hood Color</p>
+          <div class="clr-swatches" id="hoodColors"></div>
+        </div>
+        <div class="clr-group" id="cuffsGroup">
+          <p class="clr-label"><span class="indicator" id="cuffsIndicator" style="background:#1A5632"></span> Cuffs & Hem Color</p>
+          <div class="clr-swatches" id="cuffsColors"></div>
+        </div>
+      </div>
+      <!-- Design Tab -->
+      <div class="diy-tab-content" id="tab-design">
+        <div class="zone-select">
+          <label>Placement Zone</label>
+          <select id="zoneSelect">
+            <option value="center-chest">Center Chest</option>
+            <option value="left-chest">Left Chest</option>
+            <option value="right-chest">Right Chest</option>
+            <option value="full-front">Full Front</option>
+            <option value="upper-back">Upper Back</option>
+            <option value="full-back">Full Back</option>
+            <option value="left-sleeve">Left Sleeve</option>
+            <option value="right-sleeve">Right Sleeve</option>
+            <option value="hood">Hood</option>
+            <option value="collar">Collar Area</option>
+            <option value="hem">Bottom Hem</option>
+            <option value="pocket">Pocket Area</option>
+          </select>
+        </div>
+        <p class="clr-label">Design Type</p>
+        <div class="design-types">
+          <button class="design-type active" data-dtype="letters">Letters</button>
+          <button class="design-type" data-dtype="monogram">Monogram</button>
+          <button class="design-type" data-dtype="name">Name</button>
+          <button class="design-type" data-dtype="logo">Logo</button>
+          <button class="design-type" data-dtype="mascot">Mascot</button>
+          <button class="design-type" data-dtype="badge">Badge</button>
+          <button class="design-type" data-dtype="number">Number</button>
+          <button class="design-type" data-dtype="pattern">Pattern</button>
+          <button class="design-type" data-dtype="custom">Custom</button>
+        </div>
+        <!-- Letters editor -->
+        <div class="letters-editor active" id="lettersEditor">
+          <label>Your Text</label>
+          <input type="text" id="designText" placeholder="Type your text..." maxlength="30" value="EMBROO">
+          <label>Font Style</label>
+          <div class="font-options" id="fontOptions">
+            <button class="font-opt active" data-font="serif" style="font-family:serif">Serif</button>
+            <button class="font-opt" data-font="sans" style="font-family:sans-serif">Sans</button>
+            <button class="font-opt" data-font="mono" style="font-family:monospace">Mono</button>
+            <button class="font-opt" data-font="cursive" style="font-family:cursive">Script</button>
+            <button class="font-opt" data-font="yatra" style="font-family:'Yatra One'">Yatra</button>
+          </div>
+          <label>Text Color</label>
+          <div class="clr-swatches" id="textColors" style="margin-bottom:12px"></div>
+          <label>Stitch Type</label>
+          <div class="stitch-options">
+            <button class="stitch-opt active" data-stitch="satin">Satin</button>
+            <button class="stitch-opt" data-stitch="fill">Fill</button>
+            <button class="stitch-opt" data-stitch="chain">Chain</button>
+            <button class="stitch-opt" data-stitch="cross">Cross</button>
+          </div>
+        </div>
+      </div>
+      <!-- Price -->
+      <div style="padding:0 24px 24px">
+        <div class="price-calc" id="priceCalc">
+          <div class="price-row"><span>Base Garment</span><span id="priceBase">₹1,499</span></div>
+          <div class="price-row"><span>Embroidery</span><span id="priceEmb">₹200</span></div>
+          <div class="price-row"><span>Discount (20%)</span><span class="discount" id="priceDisc">-₹340</span></div>
+          <div class="price-row total"><span>Total</span><span id="priceTotal">₹1,359</span></div>
+          <button class="price-add-cart" id="addToCartBtn">Add to Cart — ₹1,359</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Rangoli Divider -->
+<div class="rangoli-divider">
+<svg viewBox="0 0 320 40" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke-width="1"><path d="M10 20 Q40 5 70 20 Q100 35 130 20 Q160 5 190 20 Q220 35 250 20 Q280 5 310 20" stroke="#E8732A" opacity=".25"/><path d="M10 20 Q40 35 70 20 Q100 5 130 20 Q160 35 190 20 Q220 5 250 20 Q280 35 310 20" stroke="#1A5632" opacity=".2"/></g>
+</svg>
+</div>
+
+<!-- ═══ FEATURES ═══ -->
+<section class="sec feat-sec" id="features">
+<div class="container">
+  <div class="sec-hdr ctr rv">
+    <p class="sec-label">Why Embroo</p>
+    <h2 class="sec-title">Crafted with Care, Delivered with Pride</h2>
+    <div class="saffron-line"></div>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card rv rv-d1"><div class="feat-icon">🧵</div><h3 class="feat-name">Premium Thread</h3><p class="feat-desc">Imported embroidery threads that resist fading even after 100+ washes. Vibrant colors that last.</p></div>
+    <div class="feat-card rv rv-d2"><div class="feat-icon">🎨</div><h3 class="feat-name">Unlimited Colors</h3><p class="feat-desc">Up to 15 thread colors per design at no extra cost. Match your exact brand colors perfectly.</p></div>
+    <div class="feat-card rv rv-d3"><div class="feat-icon">📏</div><h3 class="feat-name">Perfect Fit</h3><p class="feat-desc">Indian sizing done right. S to 5XL available across all garments with detailed size guides.</p></div>
+    <div class="feat-card rv rv-d4"><div class="feat-icon">🚚</div><h3 class="feat-name">Free Delivery</h3><p class="feat-desc">Free shipping across India on all orders. Express delivery available in metro cities.</p></div>
+    <div class="feat-card rv rv-d5"><div class="feat-icon">🔄</div><h3 class="feat-name">Easy Returns</h3><p class="feat-desc">7-day hassle-free returns. If you're not 100% happy, we'll redo it or refund you. No questions.</p></div>
+    <div class="feat-card rv"><div class="feat-icon">🏭</div><h3 class="feat-name">Made in India</h3><p class="feat-desc">Every garment sourced and embroidered in India. Supporting local artisans and craftspeople.</p></div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section class="sec testi-sec" id="testimonials">
+<div class="container">
+  <div class="sec-hdr ctr rv">
+    <p class="sec-label">Testimonials</p>
+    <h2 class="sec-title">Loved by Thousands Across India</h2>
+    <div class="saffron-line"></div>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card rv rv-d1">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-txt">Ordered 50 custom hoodies for our college fest. The embroidery quality is outstanding — everyone thought they were from an international brand!</p>
+      <p class="testi-author">Priya Sharma</p>
+      <p class="testi-loc">Delhi University, New Delhi</p>
+    </div>
+    <div class="testi-card rv rv-d2">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-txt">We use Embroo for all our corporate merchandise. The consistency across bulk orders is remarkable. True desi quality at honest prices.</p>
+      <p class="testi-author">Rahul Mehta</p>
+      <p class="testi-loc">TechVista Solutions, Bangalore</p>
+    </div>
+    <div class="testi-card rv rv-d3">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-txt">Got matching family sweatshirts embroidered for our trip to Manali. The designs survived rain, washing, everything! Bahut accha quality hai.</p>
+      <p class="testi-author">Anita Patel</p>
+      <p class="testi-loc">Ahmedabad, Gujarat</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ NEWSLETTER ═══ -->
+<section class="nl-sec">
+<div class="container">
+  <div class="sec-hdr ctr">
+    <h2 class="sec-title" style="color:#fff">Join the Embroo Family</h2>
+    <p class="sec-sub" style="color:rgba(255,255,255,.8)">Get 15% off your first order + exclusive designs delivered to your inbox.</p>
+  </div>
+  <form class="nl-form" onsubmit="event.preventDefault();alert('Welcome to the Embroo family! 🧡')">
+    <input type="email" placeholder="your@email.com" required>
+    <button type="submit">Subscribe — 15% Off</button>
+  </form>
+</div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+<div class="container">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="logo">Emb<span>roo</span></a>
+      <p>India's premium custom embroidery studio. Every stitch tells a story — make it yours.</p>
+      <div class="made-in-india">🇮🇳 Proudly Made in India</div>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <ul><li><a href="#">Custom Hoodies</a></li><li><a href="#">Custom T-Shirts</a></li><li><a href="#">Custom Polos</a></li><li><a href="#">Custom Caps</a></li><li><a href="#">Bulk Orders</a></li></ul>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul><li><a href="#">About Us</a></li><li><a href="#">Our Artisans</a></li><li><a href="#">Blog</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li></ul>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <ul><li><a href="#">Size Guide</a></li><li><a href="#">Shipping Info</a></li><li><a href="#">Returns Policy</a></li><li><a href="#">FAQ</a></li></ul>
+      <h4 style="margin-top:18px">We Accept</h4>
+      <div class="footer-payments">
+        <span class="pay-badge">UPI</span><span class="pay-badge">Paytm</span><span class="pay-badge">PhonePe</span><span class="pay-badge">GPay</span><span class="pay-badge">Visa</span><span class="pay-badge">MC</span><span class="pay-badge">RuPay</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 Embroo India (embroo.in) — All rights reserved. Made with ❤️ in India.</p>
+  </div>
+</div>
+</footer>
+
+<script>
+/* ═══ CONFIGURATION ═══ */
+const COLORS = [
+  {name:'Black',hex:'#1A1A1A'},{name:'White',hex:'#FFFFFF'},{name:'Saffron',hex:'#E8732A'},
+  {name:'Green',hex:'#1A5632'},{name:'Maroon',hex:'#7B2D3B'},{name:'Navy',hex:'#1B2A4A'},
+  {name:'Red',hex:'#C62828'},{name:'Cream',hex:'#FDF5E6'},{name:'Grey',hex:'#6B7280'},
+  {name:'Mustard',hex:'#D4A017'},{name:'Teal',hex:'#0D7377'},{name:'Purple',hex:'#6B21A8'}
+];
+
+const GARMENT_PRICES = {hoodie:1499,tshirt:799,polo:999};
+const EMB_PRICE = 200;
+const DISCOUNT = 0.20;
+
+const FONT_MAP = {serif:'Georgia,serif',sans:'Arial,sans-serif',mono:'"Courier New",monospace',cursive:'cursive',yatra:'"Yatra One",cursive'};
+
+/* ═══ STATE ═══ */
+let state = {
+  garment:'hoodie', view:'front',
+  bodyColor:'#E8732A', hoodColor:'#7B2D3B', cuffsColor:'#1A5632',
+  designText:'EMBROO', designFont:'serif', textColor:'#FFFFFF', stitchType:'satin',
+  zone:'center-chest', designType:'letters'
+};
+
+/* ═══ INIT COLOR SWATCHES ═══ */
+function createSwatches(containerId, activeColor, onSelect){
+  const c = document.getElementById(containerId);
+  c.innerHTML = '';
+  COLORS.forEach(clr=>{
+    const s = document.createElement('button');
+    s.className = 'clr-sw' + (clr.hex===activeColor?' on':'');
+    s.style.background = clr.hex;
+    s.title = clr.name;
+    if(clr.hex==='#FFFFFF') s.style.border='2px solid #ddd';
+    s.onclick = ()=>{ onSelect(clr.hex); c.querySelectorAll('.clr-sw').forEach(x=>x.classList.remove('on')); s.classList.add('on'); };
+    c.appendChild(s);
+  });
+}
+
+function initSwatches(){
+  createSwatches('bodyColors', state.bodyColor, hex=>{ state.bodyColor=hex; document.getElementById('bodyIndicator').style.background=hex; renderGarment(); });
+  createSwatches('hoodColors', state.hoodColor, hex=>{ state.hoodColor=hex; document.getElementById('hoodIndicator').style.background=hex; renderGarment(); });
+  createSwatches('cuffsColors', state.cuffsColor, hex=>{ state.cuffsColor=hex; document.getElementById('cuffsIndicator').style.background=hex; renderGarment(); });
+  createSwatches('textColors', state.textColor, hex=>{ state.textColor=hex; renderGarment(); });
+}
+
+/* ═══ GARMENT SVG TEMPLATES ═══ */
+function getHoodieSVG(front){
+  const b=state.bodyColor, h=state.hoodColor, cu=state.cuffsColor;
+  if(front){
+    return `<svg viewBox="0 0 260 300" xmlns="http://www.w3.org/2000/svg">
+      <!-- Hood -->
+      <path d="M80 65 C80 25,180 25,180 65 L185 80 L75 80 Z" fill="${h}" stroke="rgba(0,0,0,.15)" stroke-width="1"/>
+      <!-- Body -->
+      <path d="M55 80 L40 110 L55 115 L55 260 L205 260 L205 115 L220 110 L205 80 Z" fill="${b}" stroke="rgba(0,0,0,.1)" stroke-width="1"/>
+      <!-- Kangaroo pocket -->
+      <path d="M85 185 L175 185 L175 225 C175 230,85 230,85 225 Z" fill="rgba(0,0,0,.06)" stroke="rgba(0,0,0,.08)" stroke-width=".5"/>
+      <!-- Collar -->
+      <path d="M105 65 C105 55,155 55,155 65 L155 80 C155 90,105 90,105 80 Z" fill="${h}" stroke="rgba(0,0,0,.1)" stroke-width=".5"/>
+      <!-- Drawstrings -->
+      <line x1="120" y1="80" x2="118" y2="110" stroke="rgba(255,255,255,.4)" stroke-width="1"/>
+      <line x1="140" y1="80" x2="142" y2="110" stroke="rgba(255,255,255,.4)" stroke-width="1"/>
+      <!-- Cuffs -->
+      <rect x="40" y="108" width="18" height="10" rx="3" fill="${cu}"/>
+      <rect x="203" y="108" width="18" height="10" rx="3" fill="${cu}"/>
+      <!-- Hem -->
+      <rect x="55" y="254" width="150" height="8" rx="3" fill="${cu}"/>
+      <!-- Design zone -->
+      <g id="designZone">${renderDesignOnGarment(130,150)}</g>
+    </svg>`;
+  } else {
+    return `<svg viewBox="0 0 260 300" xmlns="http://www.w3.org/2000/svg">
+      <path d="M80 65 C80 25,180 25,180 65 L185 80 L75 80 Z" fill="${h}" stroke="rgba(0,0,0,.15)" stroke-width="1"/>
+      <path d="M55 80 L40 110 L55 115 L55 260 L205 260 L205 115 L220 110 L205 80 Z" fill="${b}" stroke="rgba(0,0,0,.1)" stroke-width="1"/>
+      <rect x="40" y="108" width="18" height="10" rx="3" fill="${cu}"/>
+      <rect x="203" y="108" width="18" height="10" rx="3" fill="${cu}"/>
+      <rect x="55" y="254" width="150" height="8" rx="3" fill="${cu}"/>
+      <g id="designZone">${state.zone.includes('back')?renderDesignOnGarment(130,155):''}</g>
+    </svg>`;
+  }
+}
+
+function getTshirtSVG(front){
+  const b=state.bodyColor, cu=state.cuffsColor;
+  if(front){
+    return `<svg viewBox="0 0 260 300" xmlns="http://www.w3.org/2000/svg">
+      <path d="M60 50 L35 65 L20 110 L55 120 L55 270 L205 270 L205 120 L240 110 L225 65 L200 50 L180 50 C175 65,85 65,80 50 Z" fill="${b}" stroke="rgba(0,0,0,.1)" stroke-width="1"/>
+      <path d="M80 50 C80 35,180 35,180 50 C175 65,85 65,80 50" fill="rgba(0,0,0,.04)" stroke="rgba(0,0,0,.08)" stroke-width=".5"/>
+      <rect x="55" y="264" width="150" height="8" rx="3" fill="${cu}"/>
+      <g id="designZone">${renderDesignOnGarment(130,155)}</g>
+    </svg>`;
+  } else {
+    return `<svg viewBox="0 0 260 300" xmlns="http://www.w3.org/2000/svg">
+      <path d="M60 50 L35 65 L20 110 L55 120 L55 270 L205 270 L205 120 L240 110 L225 65 L200 50 L180 50 C175 65,85 65,80 50 Z" fill="${b}" stroke="rgba(0,0,0,.1)" stroke-width="1"/>
+      <rect x="55" y="264" width="150" height="8" rx="3" fill="${cu}"/>
+      <g id="designZone">${state.zone.includes('back')?renderDesignOnGarment(130,155):''}</g>
+    </svg>`;
+  }
+}
+
+function getPoloSVG(front){
+  const b=state.bodyColor, cu=state.cuffsColor;
+  if(front){
+    return `<svg viewBox="0 0 260 300" xmlns="http://www.w3.org/2000/svg">
+      <path d="M60 50 L35 65 L20 110 L55 120 L55 270 L205 270 L205 120 L240 110 L225 65 L200 50 L180 50 C175 65,85 65,80 50 Z" fill="${b}" stroke="rgba(0,0,0,.1)" stroke-width="1"/>
+      <!-- Collar -->
+      <path d="M90 50 C90 40,170 40,170 50 L175 62 C175 70,85 70,85 62 Z" fill="${cu}" stroke="rgba(0,0,0,.1)" stroke-width=".5"/>
+      <!-- Placket -->
+      <rect x="126" y="55" width="8" height="40" rx="2" fill="rgba(255,255,255,.2)"/>
+      <circle cx="130" cy="68" r="2" fill="rgba(0,0,0,.15)"/><circle cx="130" cy="80" r="2" fill="rgba(0,0,0,.15)"/>
+      <rect x="55" y="264" width="150" height="8" rx="3" fill="${cu}"/>
+      <g id="designZone">${renderDesignOnGarment(130,155)}</g>
+    </svg>`;
+  } else {
+    return `<svg viewBox="0 0 260 300" xmlns="http://www.w3.org/2000/svg">
+      <path d="M60 50 L35 65 L20 110 L55 120 L55 270 L205 270 L205 120 L240 110 L225 65 L200 50 L180 50 C175 65,85 65,80 50 Z" fill="${b}" stroke="rgba(0,0,0,.1)" stroke-width="1"/>
+      <path d="M90 50 C90 40,170 40,170 50 L175 62 C175 70,85 70,85 62 Z" fill="${cu}" stroke="rgba(0,0,0,.1)" stroke-width=".5"/>
+      <rect x="55" y="264" width="150" height="8" rx="3" fill="${cu}"/>
+      <g id="designZone">${state.zone.includes('back')?renderDesignOnGarment(130,155):''}</g>
+    </svg>`;
+  }
+}
+
+function renderDesignOnGarment(cx,cy){
+  if(state.designType !== 'letters' || !state.designText) return '';
+  const font = FONT_MAP[state.designFont] || 'serif';
+  let fontSize = 16;
+  if(state.designText.length > 12) fontSize = 11;
+  else if(state.designText.length > 8) fontSize = 13;
+
+  /* zone offsets */
+  let dx=cx, dy=cy;
+  switch(state.zone){
+    case 'left-chest': dx=95; dy=120; fontSize=10; break;
+    case 'right-chest': dx=165; dy=120; fontSize=10; break;
+    case 'center-chest': dx=cx; dy=130; break;
+    case 'full-front': dx=cx; dy=150; fontSize=20; break;
+    case 'upper-back': dx=cx; dy=110; break;
+    case 'full-back': dx=cx; dy=160; fontSize=20; break;
+    case 'left-sleeve': dx=48; dy=100; fontSize=8; break;
+    case 'right-sleeve': dx=212; dy=100; fontSize=8; break;
+    case 'pocket': dx=cx; dy=205; fontSize=9; break;
+    case 'collar': dx=cx; dy=80; fontSize=9; break;
+    case 'hem': dx=cx; dy=250; fontSize=9; break;
+    case 'hood': dx=cx; dy=50; fontSize=10; break;
+  }
+
+  let stitchFilter = '';
+  if(state.stitchType==='chain') stitchFilter='letter-spacing:3px;';
+  if(state.stitchType==='cross') stitchFilter='letter-spacing:2px;font-weight:normal;';
+  if(state.stitchType==='fill') stitchFilter='paint-order:stroke;stroke:rgba(0,0,0,.2);stroke-width:2px;';
+
+  return `<text x="${dx}" y="${dy}" text-anchor="middle" font-size="${fontSize}" fill="${state.textColor}" font-family="${font}" font-weight="bold" style="${stitchFilter}">${escapeHtml(state.designText)}</text>`;
+}
+
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function renderGarment(){
+  const preview = document.getElementById('garmentPreview');
+  const front = state.view === 'front';
+  let svg='';
+  switch(state.garment){
+    case 'hoodie': svg=getHoodieSVG(front); break;
+    case 'tshirt': svg=getTshirtSVG(front); break;
+    case 'polo': svg=getPoloSVG(front); break;
+  }
+  preview.innerHTML = svg;
+  updatePrice();
+  updateHoodCuffsVisibility();
+}
+
+function updateHoodCuffsVisibility(){
+  const hg=document.getElementById('hoodGroup');
+  if(state.garment==='hoodie'){hg.style.display='block';}else{hg.style.display='none';}
+}
+
+/* ═══ PRICE CALCULATOR ═══ */
+function updatePrice(){
+  const base = GARMENT_PRICES[state.garment];
+  const emb = state.designText ? EMB_PRICE : 0;
+  const subtotal = base + emb;
+  const disc = Math.round(subtotal * DISCOUNT);
+  const total = subtotal - disc;
+  document.getElementById('priceBase').textContent = '₹'+base.toLocaleString('en-IN');
+  document.getElementById('priceEmb').textContent = '₹'+emb;
+  document.getElementById('priceDisc').textContent = '-₹'+disc;
+  document.getElementById('priceTotal').textContent = '₹'+total.toLocaleString('en-IN');
+  document.getElementById('addToCartBtn').textContent = 'Add to Cart — ₹'+total.toLocaleString('en-IN');
+}
+
+/* ═══ EVENT HANDLERS ═══ */
+function init(){
+  initSwatches();
+  renderGarment();
+
+  /* Tabs */
+  document.querySelectorAll('.diy-tab').forEach(tab=>{
+    tab.onclick = ()=>{
+      document.querySelectorAll('.diy-tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.diy-tab-content').forEach(c=>c.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-'+tab.dataset.tab).classList.add('active');
+    };
+  });
+
+  /* View toggle */
+  document.querySelectorAll('.diy-view-btn').forEach(btn=>{
+    btn.onclick = ()=>{
+      document.querySelectorAll('.diy-view-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      state.view = btn.dataset.view;
+      renderGarment();
+    };
+  });
+
+  /* Garment select */
+  document.querySelectorAll('.garment-opt').forEach(btn=>{
+    btn.onclick = ()=>{
+      document.querySelectorAll('.garment-opt').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      state.garment = btn.dataset.garment;
+      renderGarment();
+    };
+  });
+
+  /* Design type */
+  document.querySelectorAll('.design-type').forEach(btn=>{
+    btn.onclick = ()=>{
+      document.querySelectorAll('.design-type').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      state.designType = btn.dataset.dtype;
+      document.getElementById('lettersEditor').classList.toggle('active', ['letters','monogram','name','number'].includes(state.designType));
+      renderGarment();
+    };
+  });
+
+  /* Text input */
+  document.getElementById('designText').oninput = e=>{ state.designText=e.target.value; renderGarment(); };
+
+  /* Font options */
+  document.querySelectorAll('.font-opt').forEach(btn=>{
+    btn.onclick = ()=>{
+      document.querySelectorAll('.font-opt').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      state.designFont = btn.dataset.font;
+      renderGarment();
+    };
+  });
+
+  /* Stitch type */
+  document.querySelectorAll('.stitch-opt').forEach(btn=>{
+    btn.onclick = ()=>{
+      document.querySelectorAll('.stitch-opt').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      state.stitchType = btn.dataset.stitch;
+      renderGarment();
+    };
+  });
+
+  /* Zone select */
+  document.getElementById('zoneSelect').onchange = e=>{
+    state.zone = e.target.value;
+    /* auto switch view */
+    if(state.zone.includes('back')) { state.view='back'; } else { state.view='front'; }
+    document.querySelectorAll('.diy-view-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===state.view));
+    renderGarment();
+  };
+
+  /* Add to cart */
+  document.getElementById('addToCartBtn').onclick = ()=>{
+    const badge = document.querySelector('.cart-badge');
+    badge.textContent = parseInt(badge.textContent)+1;
+    alert('Added to cart! 🛒');
+  };
+
+  /* Header scroll */
+  window.addEventListener('scroll',()=>{
+    document.getElementById('hdr').classList.toggle('scrolled',window.scrollY>50);
+  });
+
+  /* Scroll reveal */
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('vis'); });
+  },{threshold:0.1});
+  document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+}
+
+function scrollToBuilder(garment){
+  state.garment = garment;
+  document.querySelectorAll('.garment-opt').forEach(b=>{b.classList.toggle('active',b.dataset.garment===garment);});
+  document.getElementById('builder').scrollIntoView({behavior:'smooth'});
+  setTimeout(()=>renderGarment(),300);
+}
+
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
