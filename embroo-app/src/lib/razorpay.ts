@@ -67,7 +67,15 @@ export async function createRazorpayOrder(
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
   if (!keyId || !keySecret) {
-    // Return a mock order for development
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error(
+        'Razorpay credentials are not configured. Refusing to create orders in production.'
+      );
+    }
+    // Local development without keys: return a mock order. Note that the
+    // server will refuse to verify payment for these orders, so they cannot
+    // transition to PAID/CONFIRMED — they remain PENDING.
+    console.warn('[Razorpay] No keys configured — returning mock order (dev only).');
     return {
       id: `order_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
       entity: 'order',
@@ -191,9 +199,9 @@ export async function verifyPayment(
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
   if (!keySecret) {
-    // Development mode: skip verification
-    console.warn('[Razorpay] No key secret configured — skipping signature verification');
-    return true;
+    throw new Error(
+      'RAZORPAY_KEY_SECRET is not configured. Refusing to verify payment without it.'
+    );
   }
 
   // Use Web Crypto API for HMAC-SHA256 verification
@@ -212,5 +220,11 @@ export async function verifyPayment(
     .map((b) => b.toString(16).padStart(2, '0'))
     .join('');
 
-  return expectedSignature === signature;
+  // Constant-time comparison to mitigate timing-based signature leaks
+  if (expectedSignature.length !== signature.length) return false;
+  let mismatch = 0;
+  for (let i = 0; i < expectedSignature.length; i++) {
+    mismatch |= expectedSignature.charCodeAt(i) ^ signature.charCodeAt(i);
+  }
+  return mismatch === 0;
 }

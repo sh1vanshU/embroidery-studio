@@ -1,5 +1,6 @@
 import { getServerSession } from "next-auth";
 import type { NextAuthOptions } from "next-auth";
+import type { Provider } from "next-auth/providers/index";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
@@ -23,7 +24,7 @@ export async function verifyPassword(
 
 // ─── NextAuth Configuration ──────────────────────────────────────────────────
 
-const providers = [
+const providers: Provider[] = [
   CredentialsProvider({
     name: "credentials",
     credentials: {
@@ -66,11 +67,10 @@ const providers = [
 // Conditionally add Google provider if env vars are present
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   providers.push(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }) as any
+    })
   );
 }
 
@@ -79,7 +79,8 @@ export const authOptions: NextAuthOptions = {
   providers,
   session: {
     strategy: "jwt",
-    maxAge: 15 * 60, // 15 minutes
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+    updateAge: 60 * 60 * 24,  // refresh token once per day
   },
   pages: {
     signIn: "/auth/login",

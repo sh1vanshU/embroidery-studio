@@ -98,10 +98,10 @@ function generateRequestId(): string {
 }
 
 // ---------------------------------------------------------------------------
-// Middleware
+// Proxy (formerly known as `middleware` in Next.js < 16; same semantics).
 // ---------------------------------------------------------------------------
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const url = request.nextUrl.clone();
 
@@ -185,9 +185,10 @@ export function middleware(request: NextRequest) {
   // ------------------------------------------------------------------
   if (pathname.startsWith("/api")) {
     const origin = request.headers.get("origin") ?? "";
-    const isAllowed =
-      ALLOWED_ORIGINS.includes(origin) ||
-      process.env.NODE_ENV === "development";
+    const allowDev =
+      process.env.NODE_ENV !== "production" &&
+      process.env.ALLOW_DEV_CORS === "1";
+    const isAllowed = ALLOWED_ORIGINS.includes(origin) || allowDev;
 
     if (isAllowed) {
       response.headers.set("Access-Control-Allow-Origin", origin || "*");

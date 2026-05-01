@@ -40,9 +40,12 @@ export function BuilderPreview() {
 
   const [previewMode, setPreviewMode] = useState<PreviewMode>('2D');
 
-  // Default to 3D if WebGL is available
+  // Default to 3D if WebGL is available — detectWebGL touches `document`, so
+  // it must run after hydration. The first paint at '2D' is intentional to
+  // keep server and client output identical.
   useEffect(() => {
     if (detectWebGL()) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPreviewMode('3D');
     }
   }, []);

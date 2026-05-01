@@ -6,9 +6,11 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useSession } from 'next-auth/react';
 import { useCartStore } from '@/stores/cartStore';
 import { formatINR, cn } from '@/lib/utils';
 import { SIZE_DATA } from '@/lib/constants';
+import { openRazorpayCheckout } from '@/lib/razorpay';
 import type { CartItem } from '@/types';
 
 // ---------------------------------------------------------------------------
@@ -414,11 +416,13 @@ function StepShipping({
 
 function StepPayment({
   total,
+  isProcessing,
   onNext,
   onBack,
   onSelectPayment,
 }: {
   total: number;
+  isProcessing: boolean;
   onNext: () => void;
   onBack: () => void;
   onSelectPayment: (method: string) => void;
@@ -493,15 +497,21 @@ function StepPayment({
         <button
           type="button"
           onClick={onBack}
-          className="flex-1 py-2.5 bg-transparent border border-[var(--border)] text-text-secondary text-[0.85rem] font-medium rounded-[8px] hover:bg-surface-hover transition-all cursor-pointer"
+          disabled={isProcessing}
+          className="flex-1 py-2.5 bg-transparent border border-[var(--border)] text-text-secondary text-[0.85rem] font-medium rounded-[8px] hover:bg-surface-hover transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           &larr; Back
         </button>
         <button
           onClick={handlePay}
-          className="flex-1 py-2.5 bg-gold text-charcoal-deep font-semibold text-[0.85rem] tracking-[0.06em] rounded-[8px] hover:bg-gold-light hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(212,168,83,0.3)] transition-all cursor-pointer"
+          disabled={isProcessing}
+          className="flex-1 py-2.5 bg-gold text-charcoal-deep font-semibold text-[0.85rem] tracking-[0.06em] rounded-[8px] hover:bg-gold-light hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(212,168,83,0.3)] transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0 disabled:shadow-none"
         >
-          {selected === 'cod' ? 'Place Order (COD)' : `Pay ${formatINR(total)}`}
+          {isProcessing
+            ? 'Processing...'
+            : selected === 'cod'
+              ? 'Place Order (COD)'
+              : `Pay ${formatINR(total)}`}
         </button>
       </div>
     </div>
@@ -608,6 +618,7 @@ function StepConfirmation({
 
 export default function CheckoutPage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const { items, getTotal, clearCart } = useCartStore();
   const total = getTotal();
 
@@ -615,18 +626,116 @@ export default function CheckoutPage() {
   const [shippingAddress, setShippingAddress] = useState<ShippingInput | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<string>('upi');
   const [orderNumber, setOrderNumber] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handlePlaceOrder = useCallback(() => {
-    // Generate order number
-    const num = `EMB-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
-    setOrderNumber(num);
-    setStep(3);
-    clearCart();
-  }, [clearCart]);
+  const handlePlaceOrder = useCallback(async () => {
+    if (!shippingAddress) {
+      setErrorMessage('Please complete the shipping address first.');
+      setStep(1);
+      return;
+    }
+
+    if (status !== 'authenticated') {
+      router.push(`/auth/login?returnTo=${encodeURIComponent('/checkout')}`);
+      return;
+    }
+
+    setIsProcessing(true);
+    setErrorMessage(null);
+
+    try {
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          shippingAddress,
+          sameAsShipping: true,
+          items: items.map((i) => ({
+            id: i.id,
+            garmentType: i.garmentType,
+            colors: i.colors,
+            zoneDesigns: i.zoneDesigns,
+            size: i.size,
+            quantity: i.quantity,
+            unitPrice: i.unitPrice,
+          })),
+          paymentMethod,
+        }),
+      });
+
+      const payload = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(payload?.error ?? 'Failed to create order. Please try again.');
+      }
+      const order = payload.order as {
+        id: string;
+        orderNumber: string;
+        totalAmount: number;
+        razorpayOrderId: string | null;
+      };
+
+      if (paymentMethod === 'cod' || !order.razorpayOrderId) {
+        setOrderNumber(order.orderNumber);
+        setStep(3);
+        clearCart();
+        setIsProcessing(false);
+        return;
+      }
+
+      await openRazorpayCheckout({
+        orderId: order.razorpayOrderId,
+        amount: order.totalAmount,
+        customerName: session?.user?.name ?? shippingAddress.fullName,
+        customerEmail: session?.user?.email ?? undefined,
+        customerPhone: shippingAddress.phone,
+        onSuccess: async (response) => {
+          try {
+            const verify = await fetch(`/api/orders/${order.id}`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpaySignature: response.razorpay_signature,
+              }),
+            });
+            if (!verify.ok) {
+              const err = await verify.json().catch(() => ({}));
+              throw new Error(err?.error ?? 'Payment verification failed');
+            }
+            setOrderNumber(order.orderNumber);
+            setStep(3);
+            clearCart();
+          } catch (err) {
+            setErrorMessage(
+              err instanceof Error
+                ? err.message
+                : 'Payment verification failed. Please contact support.',
+            );
+          } finally {
+            setIsProcessing(false);
+          }
+        },
+        onDismiss: () => {
+          setIsProcessing(false);
+          setErrorMessage('Payment was cancelled. Your order is still pending.');
+        },
+      });
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : 'Something went wrong.');
+      setIsProcessing(false);
+    }
+  }, [shippingAddress, status, paymentMethod, items, session, clearCart, router]);
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       <ProgressBar current={step} />
+
+      {errorMessage && step !== 3 && (
+        <div className="mb-4 p-3 rounded-[8px] bg-red-500/10 border border-red-500/30 text-red-300 text-[0.85rem]">
+          {errorMessage}
+        </div>
+      )}
 
       {step === 0 && (
         <StepReviewCart items={items} total={total} onNext={() => setStep(1)} />
@@ -641,6 +750,7 @@ export default function CheckoutPage() {
       {step === 2 && (
         <StepPayment
           total={total}
+          isProcessing={isProcessing}
           onNext={handlePlaceOrder}
           onBack={() => setStep(1)}
           onSelectPayment={setPaymentMethod}
