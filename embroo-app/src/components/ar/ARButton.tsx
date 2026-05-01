@@ -31,6 +31,10 @@ export function ARButton() {
   const [support, setSupport] = useState<SupportStatus>('checking');
 
   useEffect(() => {
+    // Detection requires client-only globals (navigator, document); the
+    // initial 'checking' state intentionally renders null on the server so
+    // there is no hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSupport(checkARSupport());
   }, []);
 

@@ -21,6 +21,7 @@ export const useThemeStore = create<ThemeState>()(
     }),
     {
       name: 'embroo-theme',
+      skipHydration: true,
     }
   )
 );

@@ -1,37 +1,17 @@
 import type { NextConfig } from "next";
 
 // ---------------------------------------------------------------------------
-// Security headers applied to every response
+// Static security headers applied to every response.
+//
+// NOTE: Content-Security-Policy is intentionally not set here — it is built
+// per-request in middleware.ts so that a fresh nonce can be embedded into the
+// `script-src` directive. Defining a static CSP here would race the
+// middleware version and either weaken protection or break inline scripts.
 // ---------------------------------------------------------------------------
 const securityHeaders = [
-  {
-    key: "Content-Security-Policy",
-    value: [
-      "default-src 'self'",
-      "script-src 'self' 'nonce-${nonce}' 'strict-dynamic'",
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-      "img-src 'self' data: blob: https://res.cloudinary.com https://*.cloudinary.com",
-      "font-src 'self' https://fonts.gstatic.com",
-      "connect-src 'self' https://res.cloudinary.com https://api.cloudinary.com https://vitals.vercel-insights.com",
-      "frame-ancestors 'none'",
-      "base-uri 'self'",
-      "form-action 'self'",
-      "object-src 'none'",
-      "upgrade-insecure-requests",
-    ].join("; "),
-  },
-  {
-    key: "X-Frame-Options",
-    value: "DENY",
-  },
-  {
-    key: "X-Content-Type-Options",
-    value: "nosniff",
-  },
-  {
-    key: "Referrer-Policy",
-    value: "strict-origin-when-cross-origin",
-  },
+  { key: "X-Frame-Options", value: "DENY" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   {
     key: "Permissions-Policy",
     value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
@@ -40,17 +20,11 @@ const securityHeaders = [
     key: "Strict-Transport-Security",
     value: "max-age=63072000; includeSubDomains; preload",
   },
-  {
-    key: "X-XSS-Protection",
-    value: "1; mode=block",
-  },
 ];
 
 const nextConfig: NextConfig = {
-  // Remove the X-Powered-By header
   poweredByHeader: false,
 
-  // Image optimization — Cloudinary as external source
   images: {
     remotePatterns: [
       {
@@ -66,7 +40,6 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  // Apply security headers to all routes
   async headers() {
     return [
       {
@@ -76,7 +49,6 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Strict mode for React in production
   reactStrictMode: true,
 };
 

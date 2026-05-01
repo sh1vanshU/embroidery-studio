@@ -8,7 +8,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 // ─── Enums ────────────────────────────────────────────────────────────────────
@@ -204,7 +203,7 @@ model OrderItem {
   id      String @id @default(cuid())
   orderId String
 
-  productId   String
+  productId   String?
   designId    String?
   garmentType GarmentType
   size        String
@@ -214,9 +213,9 @@ model OrderItem {
   // Snapshot of the full builder state at time of order (immutable record)
   designSnapshot Json
 
-  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  design  Design? @relation(fields: [designId], references: [id], onDelete: SetNull)
-  product Product @relation(fields: [productId], references: [id])
+  order   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  design  Design?  @relation(fields: [designId], references: [id], onDelete: SetNull)
+  product Product? @relation(fields: [productId], references: [id])
 
   @@index([orderId])
 }

@@ -1,31 +1,27 @@
-// Prisma client singleton
-// Note: Run `npx prisma generate` after setting up your database
-// and updating DATABASE_URL in .env.local
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let PrismaClientClass: any;
-
-try {
-  // Dynamic import to prevent build failures when prisma isn't generated yet
-  PrismaClientClass = require('@prisma/client').PrismaClient;
-} catch {
-  // Prisma client not generated yet — this is expected during initial setup
-  PrismaClientClass = null;
-}
+import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 
 const globalForPrisma = globalThis as unknown as {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  prisma: any | undefined;
+  prisma: PrismaClient | undefined;
 };
 
-export const prisma =
-  globalForPrisma.prisma ??
-  (PrismaClientClass
-    ? new PrismaClientClass({
-        log: process.env.NODE_ENV === 'development' ? ['query'] : [],
-      })
-    : null);
+function createClient(): PrismaClient {
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    throw new Error(
+      "DATABASE_URL is not set. Configure it in .env.local before running the server.",
+    );
+  }
+  const adapter = new PrismaPg({ connectionString });
+  return new PrismaClient({
+    adapter,
+    log: process.env.NODE_ENV === "development" ? ["query", "warn", "error"] : ["error"],
+  });
+}
 
-if (process.env.NODE_ENV !== 'production') {
+export const prisma: PrismaClient =
+  globalForPrisma.prisma ?? createClient();
+
+if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
 }

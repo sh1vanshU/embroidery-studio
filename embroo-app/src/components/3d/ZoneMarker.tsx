@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
@@ -15,6 +15,16 @@ interface ZoneMarkerProps {
 export function ZoneMarker({ position, size, label, active = false }: ZoneMarkerProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const edgesRef = useRef<THREE.LineSegments>(null);
+
+  // Memoise the helper PlaneGeometry passed into <edgesGeometry args=[...]>.
+  // Without memoisation a new BufferGeometry is allocated on every render and
+  // R3F's reconciler can't dispose the previous instance — that's a per-frame
+  // GPU leak. Disposing on unmount is the safety belt.
+  const planeForEdges = useMemo(
+    () => new THREE.PlaneGeometry(size[0], size[1]),
+    [size],
+  );
+  useEffect(() => () => planeForEdges.dispose(), [planeForEdges]);
 
   useFrame(({ clock }) => {
     if (!meshRef.current) return;
@@ -48,7 +58,7 @@ export function ZoneMarker({ position, size, label, active = false }: ZoneMarker
 
       {/* Dashed gold outline */}
       <lineSegments ref={edgesRef}>
-        <edgesGeometry args={[new THREE.PlaneGeometry(size[0], size[1])]} />
+        <edgesGeometry args={[planeForEdges]} />
         <lineDashedMaterial
           color="#D4A853"
           dashSize={0.03}

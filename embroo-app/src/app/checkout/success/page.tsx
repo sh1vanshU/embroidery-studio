@@ -35,6 +35,9 @@ function OrderSuccessContent() {
         year: 'numeric',
       });
 
+    // toLocaleDateString output depends on timezone, so the value is
+    // computed after hydration to avoid SSR/CSR mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDeliveryRange({ start: fmt(start), end: fmt(end) });
   }, []);
 

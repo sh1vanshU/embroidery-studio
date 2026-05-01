@@ -92,6 +92,7 @@ export const useCartStore = create<CartState>()(
     })),
     {
       name: 'embroo-cart',
+      skipHydration: true,
       partialize: (state) => ({
         items: state.items,
       }),
